@@ -1,0 +1,18 @@
+theme: vertx-howtos-jekyll-theme
+
+url: https://vertx-howtos.github.io/k8s-client-side-lb-howto/
+
+asciidoctor:
+  attributes:
+    source-highlighter: rouge
+    rouge-css: style
+
+exclude:
+  - LICENSE
+  - build*
+  - pom.xml
+  - settings.gradle.kts
+  - target
+  - gradle*
+  - src
+  - Gemfile*
