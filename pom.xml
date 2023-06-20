@@ -16,13 +16,27 @@
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
 
-    <vertx.version>4.4.3</vertx.version>
+    <vertx.version>5.0.0-SNAPSHOT</vertx.version>
     <junit-jupiter.version>5.9.1</junit-jupiter.version>
 
     <main.verticle>com.example.starter.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>
     <verticle>com.example.starter.MainVerticle</verticle>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>vertx-snapshots-repository</id>
+      <name>Vert.x Snapshots Repository</name>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
     <dependencies>
