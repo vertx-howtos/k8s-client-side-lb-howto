@@ -9,7 +9,7 @@ import io.vertx.serviceresolver.kube.KubeResolverOptions;
 
 public class MainVerticle extends VerticleBase {
 
-  private static final ServiceAddress SERCICE_ADDRESS = ServiceAddress.of("hello-node");
+  private static final ServiceAddress SERVICE_ADDRESS = ServiceAddress.of("hello-node");
 
   private HttpClient client;
 
@@ -18,8 +18,7 @@ public class MainVerticle extends VerticleBase {
 
     client = vertx
       .httpClientBuilder()
-      .withAddressResolver(KubeResolver.create(new KubeResolverOptions())
-      )
+      .withAddressResolver(KubeResolver.create(new KubeResolverOptions()))
       .build();
 
     StringBuilder sb = new StringBuilder();
@@ -31,7 +30,7 @@ public class MainVerticle extends VerticleBase {
       .requestHandler(req -> {
         RequestOptions connect = new RequestOptions()
           .setMethod(HttpMethod.GET)
-          .setServer(SERCICE_ADDRESS)
+          .setServer(SERVICE_ADDRESS)
           .setHost("localhost")
           .setPort(80)
           .setURI("/");
