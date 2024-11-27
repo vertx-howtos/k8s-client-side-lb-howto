@@ -3,7 +3,7 @@ name: Publish the how-to
 on:
   push:
     branches:
-      - master
+      - main
   schedule:
     - cron:  '0 0 * * *'
 
