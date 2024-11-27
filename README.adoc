@@ -27,24 +27,18 @@ It consists of a single part (or _microservice_) communicating with another pod 
 * `kubectl` command-line tool
 
 
-== Create the projects
+== Create the project
 
-The code of the _frontend_ and _backend_ projects contains Maven and Gradle build files that are functionally equivalent.
+The code of the _microservice_ project contains Maven and Gradle build files that are functionally equivalent.
 
 === Dependencies
 
 Both projects depend on:
 
-* https://vertx.io/docs/vertx-infinispan/java[`Vert.x Infinispan`]
-* https://vertx.io/docs/vertx-web/java[`Vert.x Web`]
-* https://vertx.io/docs/vertx-health-check/java[`Vert.x Health Check`]
+* https://vertx.io/docs/vertx-core/java[`Vert.x Core`]
+* https://vertx.io/docs/5.0.0.CR2/vertx-service-resolver/java/[`Vert.x Service Resolver`]
 
-Vert.x Infinispan is a cluster manager for Vert.x based on the https://infinispan.org/[Infinispan] in-memory key/value data store.
-In Vert.x a cluster manager is used for various functions. In particular it provides discovery/membership of cluster nodes and stores _event bus_ subscription data.
-
-Vert.x Web is a set of building blocks which make it easy to create HTTP applications.
-
-Vert.x Health Check is a component that standardizes the process of checking the different parts of your system, deducing a status and exposing it.
+The Service Resolver library is a plugin that lets Vert.x clients call services using logical service names instead of network addresses. The service resolver is also capable to perform client side load balancing with the usual strategies.
 
 === Containerization
 
@@ -59,26 +53,13 @@ To create containers we will use https://github.com/GoogleContainerTools/jib[Jib
 Here is the content of the `pom.xml` file you should be using for the _frontend_:
 
 ifdef::env-github[]
-link:frontend/pom.xml[_Frontend_ Maven POM file]
+link:pom.xml[_Microservice_ Maven POM file]
 endif::env-github[]
 ifndef::env-github[]
 [source,xml,role="collapsed"]
 ._Frontend_ Maven `pom.xml`
 ----
-include::frontend/pom.xml[]
-----
-endif::env-github[]
-
-For the _backend_, the content is similar:
-
-ifdef::env-github[]
-link:backend/pom.xml[_Backend_ Maven POM file]
-endif::env-github[]
-ifndef::env-github[]
-[source,xml,role="collapsed"]
-._Backend_ Maven `pom.xml`
-----
-include::backend/pom.xml[]
+include::pom.xml[]
 ----
 endif::env-github[]
 
@@ -87,125 +68,48 @@ endif::env-github[]
 Assuming you use Gradle with the Kotlin DSL, here is what your `build.gradle.kts` file should look like for the _frontend_:
 
 ifdef::env-github[]
-link:frontend/build.gradle.kts[_Frontend_ Gradle build file]
+link:build.gradle.kts[_Microservice_ Gradle build file]
 endif::env-github[]
 ifndef::env-github[]
 [source,kotlin,role="collapsed"]
-._Frontend_ Gradle `build.gradle.kts`
+._Microservice_ Gradle `build.gradle.kts`
 ----
-include::frontend/build.gradle.kts[]
+include::build.gradle.kts[]
 ----
 endif::env-github[]
 
-For the _backend_, the content is similar:
+== Implement the service
+
+Let's implement the _microservice_ and then test it on the development machine.
+
+The _frontend_ service is encapsulated in a `MicroServiceVerticle` class.
+
+The service will request another pod of the Kubernetes cluster with a service address.
 
 ifdef::env-github[]
-link:backend/build.gradle.kts[_Backend_ Gradle build file]
-endif::env-github[]
-ifndef::env-github[]
-[source,kotlin,role="collapsed"]
-._Backend_ Gradle `build.gradle.kts`
-----
-include::backend/build.gradle.kts[]
-----
-endif::env-github[]
-
-== Implement the services
-
-Let's start with the _backend_ service. We will continue with the _frontend_ and then test them on the development machine.
-
-=== _Backend_ service
-
-The _backend_ service is encapsulated in a `BackendVerticle` class.
-
-It is configured with environment variables:
-
-ifdef::env-github[]
-link:backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[BackendVerticle config]
+link:src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[MicroServiceVerticle]
 endif::env-github[]
 ifndef::env-github[]
 [source,java,role="collapsed"]
-.Java `backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java`
+.Java `src/main/java/io/vertx/howtos/clientsidelb/FrontendVerticle.java`
 ----
-include::backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[tag=config]
-----
-endif::env-github[]
-
-When the verticle starts, it registers an _event bus_ consumer, sets up a Vert.x Web `Router` and binds an HTTP server:
-
-ifdef::env-github[]
-link:backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[BackendVerticle start]
-endif::env-github[]
-ifndef::env-github[]
-[source,java,role="collapsed"]
-.Java `backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java`
-----
-include::backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[tag=start]
+include::src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[tag=config]
 ----
 endif::env-github[]
 
-The _event bus_ consumer takes messages sent to the `greetings` address and formats a reply:
 
-ifdef::env-github[]
-link:backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[BackendVerticle consumer]
-endif::env-github[]
-ifndef::env-github[]
-[source,java,role="collapsed"]
-.Java `backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java`
-----
-include::backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[tag=consumer]
-----
-endif::env-github[]
 
-The `Router` exposes health and readiness checks over HTTP:
 
-ifdef::env-github[]
-link:backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[BackendVerticle router]
-endif::env-github[]
-ifndef::env-github[]
-[source,java,role="collapsed"]
-.Java `backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java`
-----
-include::backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[tag=router]
-----
-endif::env-github[]
 
-TIP: Vert.x Infinispan provides a cluster health check out of the box.
-`io.vertx.ext.cluster.infinispan.ClusterHealthCheck` verifies the underlying Infinispan cluster status.
 
-For local testing, a `main` method is an easy way to start the verticle from the IDE:
+TODO TODO TODO
+TODO TODO TODO
+TODO TODO TODO
 
-ifdef::env-github[]
-link:backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[BackendVerticle main]
-endif::env-github[]
-ifndef::env-github[]
-[source,java,role="collapsed"]
-.Java `backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java`
-----
-include::backend/src/main/java/io/vertx/howtos/cluster/BackendVerticle.java[tag=main]
-----
-endif::env-github[]
 
-On startup, Vert.x Infinispan uses the default networking stack which combines IP multicast for discovery and TCP connections for group messaging.
-This networking stack is fine for testing on our development machine.
-We will see later on how to switch to a stack that is suitable when deploying to Kubernetes.
 
-=== _Frontend_ service
 
-The _frontend_ service is encapsulated in a `FrontendVerticle` class.
 
-It is configured with an environment variable:
-
-ifdef::env-github[]
-link:frontend/src/main/java/io/vertx/howtos/cluster/FrontendVerticle.java[FrontendVerticle config]
-endif::env-github[]
-ifndef::env-github[]
-[source,java,role="collapsed"]
-.Java `frontend/src/main/java/io/vertx/howtos/cluster/FrontendVerticle.java`
-----
-include::frontend/src/main/java/io/vertx/howtos/cluster/FrontendVerticle.java[tag=config]
-----
-endif::env-github[]
 
 When the verticle starts, it sets up a Vert.x Web `Router` and binds an HTTP server:
 

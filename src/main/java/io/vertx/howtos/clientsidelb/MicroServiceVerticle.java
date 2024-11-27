@@ -1,4 +1,4 @@
-package io.vertx.howtos;
+package io.vertx.howtos.clientsidelb;
 
 import io.vertx.core.Future;
 import io.vertx.core.VerticleBase;
