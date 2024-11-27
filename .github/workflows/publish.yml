@@ -22,9 +22,5 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
-      - uses: actions/checkout@v2
-        with:
-          ref: "gh-pages"
-          path: "_gh_pages"
       - name: Run Jekyll and deploy
         run: ./.run.jekyll.sh
