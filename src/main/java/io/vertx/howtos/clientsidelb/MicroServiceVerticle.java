@@ -16,10 +16,12 @@ public class MicroServiceVerticle extends VerticleBase {
   @Override
   public Future<?> start() {
 
+    // tag::config[]
     client = vertx
       .httpClientBuilder()
       .withAddressResolver(KubeResolver.create(new KubeResolverOptions()))
       .build();
+    // end::config[]
 
     StringBuilder sb = new StringBuilder();
     System.getenv().forEach((k, v) -> {
