@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
+  name: microservice-deployment
   labels:
-    app: frontend
+    app: microservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: microservice
   template:
     metadata:
       labels:
-        app: frontend
+        app: microservice
     spec:
       containers:
-        - name: frontend
-          image: kubernetes-microservices/frontend:latest
+        - name: microservice
+          image: client-side-lb/microservice:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: HTTP_PORT

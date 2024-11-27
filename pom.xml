@@ -4,8 +4,8 @@
      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.example</groupId>
-  <artifactId>starter</artifactId>
+  <groupId>io.vertx.howtos</groupId>
+  <artifactId>k8s-client-slide-lb-microservice</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
@@ -19,7 +19,7 @@
     <vertx.version>5.0.0.CR2</vertx.version>
     <junit-jupiter.version>5.11.3</junit-jupiter.version>
 
-    <main.verticle>com.example.starter.MainVerticle</main.verticle>
+    <main.verticle>io.vertx.howtos.MicroServiceVerticle</main.verticle>
     <launcher.class>io.vertx.launcher.application.VertxApplication</launcher.class>
 
 <!--    <jkube.domain>192.168.58.2.nip.io</jkube.domain>-->
@@ -86,7 +86,7 @@
         <version>3.4.4</version>
         <configuration>
           <to>
-            <image>kubernetes-microservices/frontend</image>
+            <image>client-side-lb/microservice</image>
           </to>
           <container>
             <mainClass>${launcher.class}</mainClass>

@@ -1,4 +1,4 @@
-package com.example.starter;
+package io.vertx.howtos;
 
 import io.vertx.core.Future;
 import io.vertx.core.VerticleBase;
@@ -7,7 +7,7 @@ import io.vertx.serviceresolver.ServiceAddress;
 import io.vertx.serviceresolver.kube.KubeResolver;
 import io.vertx.serviceresolver.kube.KubeResolverOptions;
 
-public class MainVerticle extends VerticleBase {
+public class MicroServiceVerticle extends VerticleBase {
 
   private static final ServiceAddress SERVICE_ADDRESS = ServiceAddress.of("hello-node");
 

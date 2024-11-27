@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: microservice
 spec:
   selector:
-    app: frontend
+    app: microservice
   ports:
     - protocol: TCP
       port: 80
