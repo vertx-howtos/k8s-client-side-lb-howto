@@ -2,10 +2,6 @@
 :page-permalink: /
 :page-github: vertx-howtos/k8s-client-side-lb-howto
 
-ifdef::env-github[]
-image:https://github.com/vertx-howtos/k8s-client-side-lb-howto/workflows/Publish%20the%20how-to/badge.svg?branch=master["Build Status", link="https://github.com/vertx-howtos/k8s-client-side-lb-howto/actions?query=workflow%3A%22Publish+the+how-to%22"]
-endif::env-github[]
-
 This document will show you how to perform client side load balancing on Kubernetes with a microservice.
 
 == What you will build
