@@ -17,31 +17,17 @@
     <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
 
     <vertx.version>5.0.0.CR2</vertx.version>
-    <junit-jupiter.version>5.9.1</junit-jupiter.version>
+    <junit-jupiter.version>5.11.3</junit-jupiter.version>
 
     <main.verticle>com.example.starter.MainVerticle</main.verticle>
-    <launcher.class>io.vertx.core.Launcher</launcher.class>
-    <verticle>com.example.starter.MainVerticle</verticle>
+    <launcher.class>io.vertx.launcher.application.VertxApplication</launcher.class>
 
 <!--    <jkube.domain>192.168.58.2.nip.io</jkube.domain>-->
 <!--    <jkube.createExternalUrls>true</jkube.createExternalUrls>-->
-    <jkube.enricher.jkube-service.type>LoadBalancer</jkube.enricher.jkube-service.type>
+<!--    <jkube.enricher.jkube-service.type>LoadBalancer</jkube.enricher.jkube-service.type>-->
   </properties>
 
-  <repositories>
-    <repository>
-      <id>vertx-snapshots-repository</id>
-      <name>Vert.x Snapshots Repository</name>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
+<!--
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -53,16 +39,18 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+-->
 
   <dependencies>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
+      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-launcher-legacy-cli</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <artifactId>vertx-launcher-application</artifactId>
+      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
@@ -73,6 +61,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-junit5</artifactId>
+      <version>${vertx.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -128,7 +117,6 @@
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>
-<!--              <minimizeJar>true</minimizeJar>-->
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -149,9 +137,8 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>${exec-maven-plugin.version}</version>
         <configuration>
-          <mainClass>io.vertx.core.Launcher</mainClass>
+          <mainClass>${launcher.class}</mainClass>
           <arguments>
-            <argument>run</argument>
             <argument>${main.verticle}</argument>
           </arguments>
         </configuration>
