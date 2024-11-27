@@ -13,15 +13,13 @@ spec:
     metadata:
       labels:
         app: frontend
-        cluster: clustered-app
     spec:
       containers:
         - name: frontend
-          image: clustering-kubernetes/frontend:latest
+          image: kubernetes-microservices/frontend:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: HTTP_PORT
               value: "8080"
           ports:
             - containerPort: 8080
-      serviceAccountName: podview

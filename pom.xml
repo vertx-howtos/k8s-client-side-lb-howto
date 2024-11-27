@@ -81,6 +81,25 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>3.4.4</version>
+        <configuration>
+          <to>
+            <image>kubernetes-microservices/frontend</image>
+          </to>
+          <container>
+            <mainClass>${launcher.class}</mainClass>
+            <args>
+              <arg>${main.verticle}</arg>
+            </args>
+            <ports>
+              <port>8080</port>
+            </ports>
+          </container>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.eclipse.jkube</groupId>
         <artifactId>kubernetes-maven-plugin</artifactId>
         <version>1.14.0</version>
