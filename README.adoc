@@ -61,18 +61,7 @@ endif::env-github[]
 
 === Using Gradle
 
-Assuming you use Gradle with the Kotlin DSL, here is what your `build.gradle.kts` file should look like for the _frontend_:
-
-ifdef::env-github[]
-link:build.gradle.kts[_Microservice_ Gradle build file]
-endif::env-github[]
-ifndef::env-github[]
-[source,kotlin,role="collapsed"]
-._Microservice_ Gradle `build.gradle.kts`
-----
-include::build.gradle.kts[]
-----
-endif::env-github[]
+TODO
 
 == Implement the service
 
