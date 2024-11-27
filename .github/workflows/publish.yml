@@ -26,7 +26,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.4.22'
+          ruby-version: '2.4.2'
       - name: Run Jekyll and deploy
         run: ./.run.jekyll.sh
       - name: Setup Pages
