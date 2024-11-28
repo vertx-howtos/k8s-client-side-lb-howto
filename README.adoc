@@ -28,12 +28,13 @@ The code of the _microservice_ project contains Maven and Gradle build files tha
 
 === Dependencies
 
-Both projects depend on:
+The project depends on:
 
 * https://vertx.io/docs/vertx-core/java[`Vert.x Core`]
 * https://vertx.io/docs/5.0.0.CR2/vertx-service-resolver/java/[`Vert.x Service Resolver`]
 
-The Service Resolver library is a plugin that lets Vert.x clients call services using logical service names instead of network addresses. The service resolver is also capable of performing client side load balancing with the usual strategies.
+The Service Resolver library is a plugin that lets Vert.x clients call services using logical service names instead of network addresses.
+The service resolver is also capable of performing client side load balancing with the usual strategies.
 
 === Containerization
 
@@ -79,8 +80,8 @@ Let's implement the _microservice_ and then test it on the development machine.
 
 The _frontend_ service is encapsulated in a `MicroServiceVerticle` class.
 
-The service will request another pod of the Kubernetes cluster with a service address: the _microservice_ Verticle
-creates an `HttpClient` configured with a _load-balancer_ and a _resolver_.
+The service will request another pod of the Kubernetes cluster with a service address.
+The _microservice_ Verticle creates an `HttpClient` configured with a _load-balancer_ and a _resolver_.
 
 ifdef::env-github[]
 link:src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[MicroServiceVerticle]
@@ -93,11 +94,10 @@ include::src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[ta
 ----
 endif::env-github[]
 
-For this matter we create an address resolver that takes logical `ServiceAddress` as input and returns
-a list of addresses the HTTP client can use in practice.
+For this matter we create an address resolver that takes logical `ServiceAddress` as input and returns a list of addresses the HTTP client can use in practice.
 
-The `KubeResolver` is the resolver to go when deploying in Kubernetes. Notice that the resolver is created
-with `new KubeResolverOptions()` configured from the pod env variables set by the Kubernetes.
+The `KubeResolver` is the resolver to go when deploying in Kubernetes.
+Notice that the resolver is created with `new KubeResolverOptions()`, configured from the pod env variables set by the Kubernetes.
 
 ifdef::env-github[]
 link:src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[MicroServiceVerticle]
@@ -138,10 +138,10 @@ include::src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[ta
 ----
 endif::env-github[]
 
-Finally let's have a look at service request handling
+Finally let's have a look at service request handling.
 
-First we create an HTTP server request to the back-end server. Instead of passing the back-end server socket
-address, we use instead the logical service address, which is the name of the service in Kubernetes (`hello-node`).
+First we create an HTTP server request to the back-end server.
+Instead of passing the back-end server socket address, we use instead the logical service address, which is the name of the service in Kubernetes (`hello-node`).
 
 ifdef::env-github[]
 link:src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[MicroServiceVerticle]
@@ -154,8 +154,8 @@ include::src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[ta
 ----
 endif::env-github[]
 
-Then we implement the back-end server response handling, we send back the original response as part of our
-response, decorated with the response socket address so we can determine which server the service interacted with.
+Then we implement the back-end server response handling.
+We send back the original response as part of our response, decorated with the response socket address so we can determine which server the service interacted with.
 
 ifdef::env-github[]
 link:src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[MicroServiceVerticle]
@@ -242,7 +242,7 @@ kubectl expose deployment hello-node --type=LoadBalancer --port=8080
 Again, verify the service has been successfully created:
 
 ----
-get services hello-node
+kubectl get services hello-node
 ----
 
 You should see something like:
@@ -254,7 +254,7 @@ hello-node   LoadBalancer   10.101.56.23   <pending>     8080:32159/TCP   2m31s
 
 === Microservice deployment
 
-Now can can deploy our microservice in Kubernetes.
+Now we can deploy our microservice in Kubernetes.
 
 ifdef::env-github[]
 link:deployment.yml[Microservice Deployment]
@@ -276,7 +276,7 @@ kubectl apply -f deployment.yml
 Verify the pods have started successfully:
 
 ----
-get pods --selector=app=microservice
+kubectl get pods --selector=app=microservice
 ----
 
 You should see something like:
@@ -320,7 +320,7 @@ NAME           TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
 microservice   LoadBalancer   10.109.6.50   <pending>     80:30336/TCP   2m3s
 ----
 
-Finally, we need to configure the _default_ service account to observe the endpoints.
+Finally, we need to configure the _default_ service account to grant permission to observe the endpoints to the Vert.x service resolver.
 
 ifdef::env-github[]
 link:roles.yml[Endpoints]
