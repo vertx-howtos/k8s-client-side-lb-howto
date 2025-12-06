@@ -8,7 +8,7 @@ repositories {
   mavenCentral()
 }
 
-val vertxVersion = "5.0.0.CR2"
+val vertxVersion = "5.0.5"
 val verticle = "io.vertx.howtos.clientsidelb.MicroServiceVerticle"
 
 dependencies {

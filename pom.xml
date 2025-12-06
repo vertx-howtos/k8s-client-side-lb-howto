@@ -11,7 +11,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <vertx.version>5.0.0.CR2</vertx.version>
+    <vertx.version>5.0.5</vertx.version>
 
     <main.verticle>io.vertx.howtos.clientsidelb.MicroServiceVerticle</main.verticle>
     <launcher.class>io.vertx.launcher.application.VertxApplication</launcher.class>

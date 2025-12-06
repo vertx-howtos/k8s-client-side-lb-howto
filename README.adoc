@@ -31,7 +31,7 @@ The code of the _microservice_ project contains Maven and Gradle build files tha
 The project depends on:
 
 * https://vertx.io/docs/vertx-core/java[`Vert.x Core`]
-* https://vertx.io/docs/5.0.0.CR2/vertx-service-resolver/java/[`Vert.x Service Resolver`]
+* https://vertx.io/docs/vertx-service-resolver/java/[`Vert.x Service Resolver`]
 
 The Service Resolver library is a plugin that lets Vert.x clients call services using logical service names instead of network addresses.
 The service resolver is also capable of performing client side load balancing with the usual strategies.
@@ -138,10 +138,10 @@ include::src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[ta
 ----
 endif::env-github[]
 
-Finally let's have a look at service request handling.
+Finally, let's have a look at service request handling.
 
-First we create an HTTP server request to the back-end server.
-Instead of passing the back-end server socket address, we use instead the logical service address, which is the name of the service in Kubernetes (`hello-node`).
+First, we create an HTTP server request to the back-end server.
+Instead of passing the back-end server's socket address, we use the logical service address, which is the name of the service in Kubernetes (`hello-node`).
 
 ifdef::env-github[]
 link:src/main/java/io/vertx/howtos/clientsidelb/MicroServiceVerticle.java[MicroServiceVerticle]
@@ -362,9 +362,9 @@ changed.
 
 You can go beyond and implement the following features
 
-* Use different load-balancing https://vertx.io/docs/5.0.0.CR2/vertx-core/java/#_client_side_load_balancing[strategies]
-* Come up with your own https://vertx.io/docs/5.0.0.CR2/apidocs/io/vertx/core/net/endpoint/LoadBalancer.html[load-balancer] implementation
-* The microservice could interact with a https://vertx.io/docs/5.0.0.CR2/vertx-grpc/java/#_client_side_load_balancing[gRPC service] instead of a generic HTTP server
+* Use different load-balancing https://vertx.io/docs/vertx-core/java/#_client_side_load_balancing[strategies]
+* Come up with your own https://vertx.io/docs/apidocs/io/vertx/core/net/endpoint/LoadBalancer.html[load-balancer] implementation
+* The microservice could interact with a https://vertx.io/docs/vertx-grpc/java/#_client_side_load_balancing[gRPC service] instead of a generic HTTP server
 
 == Summary
 
@@ -376,6 +376,6 @@ This document covered:
 == See also
 
 * https://github.com/GoogleContainerTools/jib/[`Containerization with Jib`]
-* https://vertx.io/docs/5.0.0.CR2/vertx-core/java/#_client_side_load_balancing[Client side load balancing with Vert.x HTTP client]
+* https://vertx.io/docs/vertx-core/java/#_client_side_load_balancing[Client side load balancing with Vert.x HTTP client]
 * https://vertx.io/docs/vertx-service-resolver/java/#_configuring_for_kubernetes[Vert.x service resolver for Kubernetes]
 

@@ -17,7 +17,7 @@ public class MicroServiceVerticle extends VerticleBase {
   public Future<?> start() {
 
     // tag::resolver[]
-    AddressResolver resolver = KubeResolver.create(new KubeResolverOptions());
+    AddressResolver<ServiceAddress> resolver = KubeResolver.create(new KubeResolverOptions());
     // end::resolver[]
 
     // tag::load-balancer[]
@@ -54,7 +54,7 @@ public class MicroServiceVerticle extends VerticleBase {
     fut.compose(r -> r.send()
         .expecting(HttpResponseExpectation.SC_OK)
         .compose(resp -> resp.body())
-        .map(body -> "Response of pod " + r.connection().remoteAddress() + ": " + body + "\n"))
+        .map(body -> "Hello from:" + r.connection().remoteAddress() + " with: " + body + "\n"))
       .onSuccess(res -> {
         request.response()
           .putHeader("content-type", "text/plain")
